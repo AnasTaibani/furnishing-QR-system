@@ -20,10 +20,17 @@ export default function PrintProductPage() {
   const labelRef = useRef(null);
 
   useEffect(() => {
-    fetch(`/api/products/${id}`).then(r => r.json()).then(d => {
-      setProduct(d);
-      setLoading(false);
-    });
+   fetch(`/api/products/${id}`)
+  .then(r => r.json())
+  .then(d => {
+    setProduct(d);
+  })
+  .catch(err => {
+    console.error(err);
+  })
+  .finally(() => {
+    setLoading(false);
+  });
   }, [id]);
 
   const effectiveWidthIn = customMode ? Number(customWidth) || FIXED_LABEL_HEIGHT_IN * 2 : LABEL_SIZES[sizeId].widthIn;

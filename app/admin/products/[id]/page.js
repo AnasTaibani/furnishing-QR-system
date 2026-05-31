@@ -27,9 +27,12 @@ export default function EditProductPage() {
   });
 
   const loadProduct = async () => {
+  try {
     const res = await fetch(`/api/products/${id}`);
     const d = await res.json();
+
     setProduct(d);
+
     setForm({
       priceCode: d.priceCode ?? '',
       endUse: Array.isArray(d.endUse) ? d.endUse : (d.endUse ? [d.endUse] : []),
@@ -46,8 +49,13 @@ export default function EditProductPage() {
       hsnCode: d.hsnCode ?? '',
       remarks: d.remarks ?? '',
     });
+  } catch (err) {
+    console.error('Failed to load product:', err);
+    setProduct({ error: true });
+  } finally {
     setLoading(false);
-  };
+  }
+};
 
   useEffect(() => { loadProduct(); }, [id]);
 
@@ -227,33 +235,58 @@ export default function EditProductPage() {
         </div>
 
         <div className="space-y-6">
-          <Card>
-            <CardHeader><CardTitle>QR Code</CardTitle></CardHeader>
-            <CardContent className="flex flex-col items-center">
-              {product.qrCodePath ? (
-                <>
-                  <img
-                      src={`/api/qr/${product.productCode}`}
-                      alt="QR"
-                      className="w-48 h-48"
-                    />
-                  <a href={`/api/qr/${product.productCode}`} download className="text-xs text-blue-600 mt-2">Download</a>
-                </>
-              ) : <p className="text-gray-500 text-sm">Not generated</p>}
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader><CardTitle>Barcode</CardTitle></CardHeader>
-            <CardContent className="flex flex-col items-center">
-              {product.barcodePath ? (
-                <>
-                  <img src={product.barcodePath} alt="Barcode" className="w-full max-w-xs" />
-                  <a href={product.barcodePath} download className="text-xs text-blue-600 mt-2">Download</a>
-                </>
-              ) : <p className="text-gray-500 text-sm">Not generated</p>}
-            </CardContent>
-          </Card>
-        </div>
+  <Card>
+    <CardHeader>
+      <CardTitle>QR Code</CardTitle>
+    </CardHeader>
+
+    <CardContent className="flex flex-col items-center">
+      <img
+        src={`/api/qr/${product.productCode}`}
+        alt="QR Code"
+        className="w-48 h-48"
+      />
+
+      <a
+        href={`/api/qr/${product.productCode}`}
+        download={`${product.productCode}.png`}
+        className="text-xs text-blue-600 mt-2"
+      >
+        Download QR
+      </a>
+    </CardContent>
+  </Card>
+
+  <Card>
+    <CardHeader>
+      <CardTitle>Barcode</CardTitle>
+    </CardHeader>
+
+    <CardContent className="flex flex-col items-center">
+      {product.barcodePath ? (
+        <>
+          <img
+            src={product.barcodePath}
+            alt="Barcode"
+            className="w-full max-w-xs"
+          />
+
+          <a
+            href={product.barcodePath}
+            download
+            className="text-xs text-blue-600 mt-2"
+          >
+            Download Barcode
+          </a>
+        </>
+      ) : (
+        <p className="text-gray-500 text-sm">
+          Not generated
+        </p>
+      )}
+    </CardContent>
+  </Card>
+</div>
       </form>
     </div>
   );
