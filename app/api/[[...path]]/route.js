@@ -553,15 +553,8 @@ export async function POST(request) {
       };
 
       // Generate QR code and barcode
-      try {
-        const qrPath = await generateQRCode(productCode);
-        const barcodePath = await generateBarcode(productCode);
-        product.qrCodePath = qrPath;
-        product.barcodePath = barcodePath;
-      } catch (error) {
-        console.error('Error generating QR/Barcode:', error);
-        // Continue without QR/Barcode if generation fails
-      }
+      product.qrCodePath = `/api/qr/${productCode}`;
+      product.barcodePath = `/api/barcode/${productCode}`;
 
       await db.collection('products').insertOne(product);
       return NextResponse.json(product, { status: 201 });

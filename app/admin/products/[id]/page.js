@@ -232,8 +232,12 @@ export default function EditProductPage() {
             <CardContent className="flex flex-col items-center">
               {product.qrCodePath ? (
                 <>
-                  <img src={product.qrCodePath} alt="QR" className="w-48 h-48" />
-                  <a href={product.qrCodePath} download className="text-xs text-blue-600 mt-2">Download</a>
+                  <img
+                      src={`/api/qr/${product.productCode}`}
+                      alt="QR"
+                      className="w-48 h-48"
+                    />
+                  <a href={`/api/qr/${product.productCode}`} download className="text-xs text-blue-600 mt-2">Download</a>
                 </>
               ) : <p className="text-gray-500 text-sm">Not generated</p>}
             </CardContent>

@@ -101,7 +101,9 @@ export default function PrintableLabel({ product, sizeId = 's6', customWidthIn =
           }}
         >
           {product?.qrCodePath ? (
-            <img src={product.qrCodePath} alt="QR" style={{ height: '100%', width: 'auto', objectFit: 'contain' }} />
+            <img
+              src={`/api/qr/${product?.productCode}`}
+              alt="QR" style={{ height: '100%', width: 'auto', objectFit: 'contain' }} />
           ) : (
             <div className="w-full h-full border border-black/40 flex items-center justify-center text-[6pt]">QR</div>
           )}

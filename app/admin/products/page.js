@@ -136,11 +136,20 @@ export default function ProductsPage() {
                     </TableCell>
                     <TableCell>₹{p.mrp}</TableCell>
                     <TableCell className="text-center">
-                      {p.qrCodePath ? <img src={p.qrCodePath} alt="QR" className="w-10 h-10 inline-block" /> : '-'}
-                    </TableCell>
-                    <TableCell className="text-center">
-                      {p.barcodePath ? <img src={p.barcodePath} alt="BC" className="h-8 inline-block" /> : '-'}
-                    </TableCell>
+                    <img
+                      src={`/api/qr/${p.productCode}`}
+                      alt="QR"
+                      className="w-10 h-10 inline-block"
+                    />
+                  </TableCell>
+
+                  <TableCell className="text-center">
+                    <img
+                      src={`/api/barcode/${p.productCode}`}
+                      alt="BC"
+                      className="h-8 inline-block"
+                    />
+                  </TableCell>
                     <TableCell className="text-right space-x-1 whitespace-nowrap">
                       <Link href={`/admin/products/${p.id}/print`}>
                         <Button variant="ghost" size="sm" title="Print Label"><Printer className="w-4 h-4" /></Button>
